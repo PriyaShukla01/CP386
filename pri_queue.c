@@ -60,7 +60,7 @@ Node_ptr_t PQ_delete() {
 	// add your code here
 	if (head == NULL)							//base case, if queue is empty
 		return head;
-	Node_ptr_t *temp = head;//if not empty, store the head value of the queue and then remove
+	Node_ptr_t temp = head;//if not empty, store the head value of the queue and then remove
 	head = head->next;		//head is not the node after the orignal head node
 	return temp;
 }
