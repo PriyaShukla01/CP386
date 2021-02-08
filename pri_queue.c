@@ -10,24 +10,45 @@ static Node_ptr_t head = NULL;
  * @author Ryan Murari
  */
 void PQ_insert(int priority, char *data) {
-	// add your code here
+	// create the node that holds the data and priority
 	Node_t *temp = (Node_t*) malloc(sizeof(Node_t));
 	temp->priority = priority;
 	temp->data = data;
+
+	// if queue is empty, head is new node and it points to null
 	if (head == NULL) {
 		head = temp;
 		head->next = NULL;
 		return;
 	}
+
+	//iterate through the queue till it reaches the end or a node of
+	//which the priority is greater than or equal to the node to be inserted
 	Node_t *current = head;
 	Node_t *prev = NULL;
-	while (current != NULL && current->priority <= current->next->priority) {
+	while (current != NULL && temp->priority <= current->priority) {
 		prev = current;
 		current = current->next;
 	}
+	//insert node at the head if node has the highest priority
 	if (current == head) {
 		head = temp;
 		head->next = current;
+	}
+	//insert node at the end if priority of node is lowest
+	else if (current == NULL) {
+		prev->next = temp;
+		temp->next = NULL;
+	}
+	//insert node after current node if the priorities are equal
+	else if (current->priority == temp->priority) {
+		temp->next = current->next;
+		current->next = temp;
+	}
+	//insert node before current node if new node has a greater priority than current
+	else if (current->priority < temp->priority) {
+		temp->next = current;
+		prev->next = temp;
 	}
 
 }
@@ -37,12 +58,10 @@ void PQ_insert(int priority, char *data) {
  */
 Node_ptr_t PQ_delete() {
 	// add your code here
-	if (head == NULL)
+	if (head == NULL)							//base case, if queue is empty
 		return head;
-	Node_ptr_t *temp = head;
-	int size = PQ_get_size();
-	head = head->next;
-	size--;
+	Node_ptr_t *temp = head;//if not empty, store the head value of the queue and then remove
+	head = head->next;		//head is not the node after the orignal head node
 	return temp;
 }
 
@@ -65,4 +84,3 @@ int PQ_get_size() {
 		;
 	return size;
 }
-
